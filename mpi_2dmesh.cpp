@@ -501,7 +501,7 @@ sobelAllTiles(int myrank, vector < vector < Tile2D > > & tileArray) {
          }
       }
    }
-}
+
 
 void
 scatterAllTiles(int myrank, vector < vector < Tile2D > > & tileArray, float *s, int global_width, int global_height)
