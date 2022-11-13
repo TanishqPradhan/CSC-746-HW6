@@ -432,22 +432,20 @@ recvStridedBuffer(float *dstBuf,
 //
 
 float
-sobel_filtered_pixel(float *s, int i, int j , int xmin, int xmax, int ymin, int ymax, float *gx, float *gy)
+sobel_filtered_pixel(float *s, int i, int j , int ncols, int nrows, float *gx, float *gy)
 {
    //float t=0.0;
    float Gx = 0.0f;
    float Gy = 0.0f;
-   int width = xmax -xmin;
 
    // ADD CODE HERE: add your code here for computing the sobel stencil computation at location (i,j)
    // of input s, returning a float
-
-   if(i > ymin && i < ymax - 1 && j > xmin && j <xmax - 1){
+   if(i > 0 && i < nrows-1 && j > 0 && j < ncols-1){
    for(int a = 0; a<3; a++)
    {
    	for(int b =0; b<3; b++)
    	{
-   		float fPixel = s[(i-ymin + a - 1)* width + (j -xmin +b - 1)];
+   		float fPixel = s[(i+a-1)*ncols + (j+b-1)];
    		Gx += gx[a*3 + b]*fPixel;
    		Gy += gy[a*3 + b]*fPixel;
    	}
@@ -459,7 +457,7 @@ sobel_filtered_pixel(float *s, int i, int j , int xmin, int xmax, int ymin, int 
 }
 
 void
-do_sobel_filtering(float *in, float *out, int ncols, int nrows, int xmin, int xmax, int ymin, int ymax)
+do_sobel_filtering(float *in, float *out, int ncols, int nrows)
 {
    float Gx[] = {1.0, 0.0, -1.0, 2.0, 0.0, -2.0, 1.0, 0.0, -1.0};
    float Gy[] = {1.0, 2.0, 1.0, 0.0, 0.0, 0.0, -1.0, -2.0, -1.0};
@@ -470,7 +468,7 @@ do_sobel_filtering(float *in, float *out, int ncols, int nrows, int xmin, int xm
    {
    	for(int y = 0; y<ncols; y++)
    	{
-   		out[x*ncols + y] = sobel_filtered_pixel(in, x, y, xmin, xmax, ymin, ymax, Gx, Gy);
+   		out[x*ncols + y] = sobel_filtered_pixel(in, x, y, ncols, nrows, Gx, Gy);
    	}
    }
 }
@@ -497,7 +495,7 @@ sobelAllTiles(int myrank, vector < vector < Tile2D > > & tileArray) {
 #endif
          // ADD YOUR CODE HERE
          // to call your sobel filtering code on each tile
-         do_sobel_filtering(t->inputBuffer.data(), t->outputBuffer.data(), t->tileWidth, t->tileHeight, t->tileXmin, t->tileXmax, t->tileYmin, t->tileYmax);
+         do_sobel_filtering(t->inputBuffer.data(), t->outputBuffer.data(), t->width, t->height);
          }
          // TODO: call your sobel filtering code here (EXTRA CREDIT)
          }
