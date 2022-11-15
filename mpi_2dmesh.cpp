@@ -232,7 +232,7 @@ computeMeshDecomposition(AppState *as, vector < vector < Tile2D > > *tileArray) 
             height = ylocs[j+1]-ylocs[j];
             Tile2D t = Tile2D(xlocs[i], ylocs[j], width, height, rank++);
             t.ghost_xmin = (i == 0 ? 0 : -1);
-            t.ghost_xmax = ((i == ytiles - 1) ? width: (width + 1))
+            t.ghost_xmax = ((i == ytiles - 1) ? width: (width + 1));
             t.ghost_ymin = (j == 0? 0:-1);
             t.ghost_ymax = ((j == ytiles - 1) ? height: (height + 1));
             tile_row.push_back(t);
