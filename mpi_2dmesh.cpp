@@ -412,7 +412,7 @@ sendStridedBuffer(float *srcBuf,
    MPI_Send(srcBuf + srcOffset, 1, strided_send_type, toRank, msgTag, MPI_COMM_WORLD);
 
    messageCount++;
-   dataMovement += sendWidth * sendHeight * sizeof(srcBuf);
+   dataMovement += sendWidth * sendHeight * sizeof(float);
 
 }
 
@@ -443,7 +443,7 @@ recvStridedBuffer(float *dstBuf,
    MPI_Recv(dstBuf + dstOffset, 1, strided_recv_type, fromRank, msgTag, MPI_COMM_WORLD, &stat);
    
    messageCount++;
-   dataMovement += expectedWidth * expectedHeight * sizeof(dstBuf);
+   dataMovement += expectedWidth * expectedHeight * sizeof(float);
 
 }
 
